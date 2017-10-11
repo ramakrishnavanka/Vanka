@@ -1,0 +1,17 @@
+---
+-
+  become: true
+  connection: ssh
+  hosts: rkservers
+  tasks:
+    -
+      file:
+        path: "{{website_dir}}{/{item}}"
+        state: directory
+      name: "Create files"
+      with_items:
+        - dir1
+        - dir2
+  vars:
+    -
+      website_dir: /home/ec2-user/
