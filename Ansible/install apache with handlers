@@ -1,0 +1,13 @@
+---
+- hosts: rkservers
+  user: ec2-user
+  connection: ssh
+  become: yes
+  tasks:
+    - name: install Nginx
+      yum: name=httpd state=present
+      notify:
+        - start httpd
+  handlers:
+    - name: start httpd
+      service: name=httpd state=started
