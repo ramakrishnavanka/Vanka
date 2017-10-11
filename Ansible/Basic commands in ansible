@@ -1,0 +1,64 @@
+
+Ansible main configration file : /etc/ansible/ansible.conf
+Ansible host file Path : /etc/ansible/hosts
+
+hosts is a inventory file. in this file we will define groups are databases like below. 
+[hosts]
+xx.xx.xx.xx
+xx.xx.xx.xx
+
+in below all examples i have uses host that means group name are DB name of hosts file
+
+After executing any ansible command you get output like : 
+
+"Changed = true "  it ansible will work on remote system the status will come as true and the result in yellow color
+"Changed = False"  it ansible not work on remote system the status will come as true and the result in green color
+
+--------------------------------------------
+
+To ping all the servers
+
+ansible hosts -m ping
+
+-----------------------------------------
+To execute shell command
+
+ansible hosts -m shell -a " command ; command;command"
+
+m = module (above case shell is module)
+a = specify command (above case command will execute)
+--------------------------------------------
+
+To install packages  
+
+Note : if your running command as a normal user you should be allow /etc/sudoers as a sudo users
+
+Ex: username ALL = NOPASSWD: ALL
+
+ansible hosts -m yum -a "name=httpd state=present" -s 
+
+-s sudo user
+
+yum it will install the packages
+------------------------------------------------
+
+To start the services
+
+ansible hosts -m service -a "name=httpd state=started" -s 
+
+service manage status of packages or services
+
+-----------------------------------------------
+
+To copy the file from main server to hosts servers
+
+ansible webservers -m copy -a "src=/home/ec2-user/index.retry dest=/home/ec2-user/index.retry"
+
+If you get any error while executing the command like : " libselinux-python" install that with yum module and try once 	
+
+-------------------------------------------------
+
+ 
+
+
+
