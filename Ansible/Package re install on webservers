@@ -1,0 +1,11 @@
+---
+- hosts: webservers
+  user: ec2-user
+  sudo: yes
+  tasks:
+  - name: remove Nginx
+    yum: name=nginx state=absent
+  - name: Install httpd
+    yum: name=httpd state=present
+  - name: start http service
+    service: name=httpd state=started
