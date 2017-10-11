@@ -1,0 +1,41 @@
+below playbook will copy the all files in from source server to hosts server even target file not avilable it will create the target folder.
+---
+-
+  hosts: webservers
+  user: ec2-user
+  connection: ssh
+  sudo: yes
+  tasks:
+    - copy:
+        src: /home/ec2-user/copy/
+        group: ec2-user
+        mode: 600
+        owner: ec2-user
+        dest: /home/ec2-user/
+		
+		
+	
+Ansible will create the destiny folder if not in the host servers.	
+Below playbook will copy the file only when the destiny folder exit when the stat is True. if make it false it create the destiny folder and implement the 
+copy module	
+		
+---
+-
+  hosts: webservers
+  user: ec2-user
+  connection: ssh
+  sudo: yes
+  tasks:
+    - name: checking directory exist or not
+	  stat:
+	    path: /home/ec2-user/krishna/
+      register: stat_result
+	  
+	- name: copying files
+      copy:
+        src: /home/ec2-user/copy/
+        group: ec2-user
+        mode: 600
+        owner: ec2-user
+        dest: /home/ec2-user/krishna/
+      when: stat_result.stat.exists == True 
