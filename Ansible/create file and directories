@@ -1,0 +1,27 @@
+Create File
+---
+- hosts: webservers
+  user: ec2-user
+  become: yes
+  tasks:
+
+    - file:
+        path: /var/www/html/index.html
+        state: touch
+        mode: 0777
+
+		
+
+Create Directory
+
+		
+---
+- hosts: webservers
+  user: ec2-user
+  become: yes
+  tasks:
+
+    - file:
+        path: /var/www/html/sample
+        state: directory
+        mode: 0777
