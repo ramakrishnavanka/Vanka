@@ -1,0 +1,38 @@
+---
+  - name: Provision an EC2 Instance
+    hosts: local
+    connection: local
+    gather_facts: True
+    tags: provisioning EC2 instance for reports server
+    # Necessary Variables for creating/provisioning the EC2 Instance
+    vars:
+      instance_type: t2.micro # Instance class 
+      security_group: ['WAC-Reports','WAC-SSH','WAC-web-access-SG'] # Change/Add the security group(s) name here
+      image: ami-62d6c019 # Change the AMI, from which you want to launch the server
+      region: us-east-1 # Change the Region
+      keypair: WAC-Reports # Change the keypair name
+      count: 1 # Number of instances to be launched
+      public_ip: yes # auto assign public ip yes/no 
+      subnet_id: subnet-0346cc59 #subnet id you want to launch instance in.
+      server_number: 9 #server number 
+    # Task that will be used to Launch/Create an EC2 Instance
+    tasks:
+      - name: Launch the new EC2 Instance
+        local_action: ec2
+                      group={{ security_group }}
+                      instance_type={{ instance_type}}
+                      image={{image}}
+                      wait=true
+                      region={{ region }}
+                      keypair={{ keypair }}
+                      ebs_optimized=true
+                      count={{count}}
+                      assign_public_ip={{public_ip}}
+                      vpc_subnet_id={{subnet_id}}
+                      instance_tags={\"Name\":\"WAC-report-{{server_number}}\"}
+        register: ec2
+      - name: associate new elastic IPs with each of the instances
+        ec2_eip:
+          device_id: "{{ item }}"
+          ec2_region: "{{ region }}"
+        with_items: "{{ ec2.instance_ids }}"
