@@ -1,0 +1,114 @@
+Importnce of Ansible
+
+Provisoning, Configration management, App Deployment
+
+Main configration file of Ansible here you can list all your servers 
+/etc/ansible/hosts
+
+Good practise to take backup of hostfile before doing modifications
+
+
+Launch a Instance Redhat or CentOS linux in Amazon console
+
+dont switch to root user do practise in as  local user only
+
+
+check the epel repository is avilable in the redhat repository
+cd /etc/yum.repos.d/
+ls
+
+install wget : Yum install wget   If gets any error please restart the machine
+
+Download epel rpm
+wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+ls *.rpm
+
+Install epel
+sudo yum install epel-release-latest-7.noarch.rpm
+
+List your new repos
+sudo yum repolist
+
+Install Ansible
+
+sudo yum install ansible -y
+ansible --version
+
+configration files location
+
+cd /etc/ansible
+
+configration file :  here you have the lots of information about the Ansible
+
+more ansible.cfg
+
+
+uncomment the below in the /etc/ansible/ansible.cfg   so you can see the logs what is going on backend
+
+log_path = /var/log/ansible.log
+
+
+check python installed or not
+
+sudo yum list installed | grep -i python
+
+check python version
+
+python
+ 
+and press X to exit from the command
+
+Take backup of hosts file to list your own servers like below
+
+sudo vi /etc/ansible/hosts
+
+you can add number of groups like below after IP you will update the pem file location as user like below
+
+[server lists]
+
+xx.xx.xx.xx
+EX : 34.232.4.81      ansible_user=ec2-user ansible_ssh_private_key_file=/home/ec2-user/WAC-Reports.pem
+
+[webserver]
+xx.xx.xx.xx
+EX : 34.232.4.81      ansible_user=ec2-user ansible_ssh_private_key_file=/home/ec2-user/WAC-Reports.pem
+
+[App servers]
+
+xx.xx.xx.xx
+EX : 34.232.4.81      ansible_user=ec2-user ansible_ssh_private_key_file=/home/ec2-user/WAC-Reports.pem
+
+
+create file like server.pem and copy the pem file in your instance
+
+ansible_user=ec2-user ansible_ssh_private_key_file=/home/ec2-user/server.pem
+
+
+vi /etc/ansible/ansible.cfg
+
+# uncomment this to disable SSH key host checking
+host_key_checking = False
+
+
+Now installation and Configration DONE !!! try to run the below command to check
+
+ansible [rkserver] -m ping   (square bracketrs not required while running the command)
+
+if unable to connect please check the ssh access manually 
+
+ssh -i /home/ec2-user/server.pem ec2-user@13.126.135.250
+
+still unable to connect please check the node servers SG. in the SG master server should be allowed
+
+
+
+ansible [rkserver] -m ping   (square bracketrs not required while running the command)
+
+
+
+
+
+
+
+
+
