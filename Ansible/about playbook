@@ -1,0 +1,25 @@
+playbook extension .yml
+
+playbook start with ---
+
+-hosts: it is list of servers which we listed in /etc/ansible/hosts   so play will execute the task those host severs only
+
+ user: which user will communicate with remote servers this user will communicate password less connection to the clinet servers
+ 
+ become: yes  this user become as root user on remote servers
+ 
+ tasks: what task it will performe on remote servers
+ 
+ - name: you define name of your task
+ 
+   yum: name=httpd state=present  ( yum = Module   Name=which RPM need to install  state=that RPM need to prasent on remote server)
+   
+   
+ - name: start httpd
+ 
+   service: name=httpd state=started enable=yes  ( service = Module  enable = like chkconfig)
+   
+   
+   
+   
+   similler you can create taks as many you need
