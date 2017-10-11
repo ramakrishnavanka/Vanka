@@ -1,0 +1,29 @@
+---
+-
+  become: true
+  connection: ssh
+  user: ec2-user
+  hosts: rkservers
+  tasks:
+    -
+      name: Adding users
+      user: name=vanka comment=sample uid=1040 group=apache
+  
+
+
+------------------------------------------------------------------
+
+---
+-
+  become: true
+  connection: ssh
+  hosts: rkservers
+  tasks:
+    - name: Adding users
+      user:
+        groups: "{{item.groups}}"
+        name: "{{item.name}}"
+        uid: "{{item.uid}}"
+      with_items:
+       - { name: kumar, groups: apache, uid: 1005 }
+       - { name: webapp, groups: apache, uid: 1006 }
